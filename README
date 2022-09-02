@@ -26,7 +26,7 @@ b. dmac test
 Steps to test gpio:
 
 1. Install cross compiler:
-   sudo apt install gcc-arm-none-eabi
+   sudo apt install gcc-arm-none-eabi u-boot-tools
    wget https://releases.linaro.org/components/toolchain/binaries/7.3-2018.05/aarch64-linux-gnu/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu.tar.xz
    sudo tar xvf gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu.tar.xz  -C /usr/local/
    export PATH=/usr/local/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu/bin:$PATH
@@ -40,19 +40,20 @@ Steps to test gpio:
    mv firmware-1eb8921ae7158249894f89e8bb6c4bfb04ec7377 firmware
    make clean
    make test
-   Plugin sd card to PC.
-   make burn_sdcard
-   Plugin the sd card to Raspberry PI 4B board.
-   Connect Raspberry PI 4B board gpio pin  8 to serial USB cable TX.
-   Connect Raspberry PI 4B board gpio Pin 10 to serial USB cable RX.
-   Connect Raspberry PI 4B board gpio pin 39 to serial USB cable ground.
+   Plugin sdcard to PC.
+   ./mksdcardimg.sh
+   sudo dd if=./sdcard.img of=/dev/mmcblk0 bs=4096 conv=notrunc,fsync
+   Plugin sdcard to rpi4b board.
+   Connect rpi4b gpio pin  8 to serial USB cable TX.
+   Connect rpi4b gpio Pin 10 to serial USB cable RX.
+   Connect rpi4b gpio pin 39 to serial USB cable ground.
    Type "script ~/outputfile.txt" on PC.
    Plugin serial USB cable to PC.
    Type "sudo screen /dev/ttyUSB0 115200" on PC.
-   Power on the Raspberry PI 4B board.
+   Power on rpi4b.
    It should display the test menu with 10 test items on PC.
    After tests done, hit q to exit tests.
-   Power off the Raspberry PI 4B board.
+   Power off rpi4b.
    Unplug serial USB cable from PC.
    Type "exit" on PC.
    vi ~/outputfile.txt
@@ -62,19 +63,20 @@ Steps to test gpio:
    git clone https://github.com/rockchip-linux/rkbin.git
    make clean
    make test
-   Plugin sd card to PC.
-   make burn_sdcard
-   Plugin sd card to ROCK PI 4B board.
-   Connect ROCK PI 4B board gpio pin  8 to serial USB cable TX.
-   Connect ROCK PI 4B board gpio Pin 10 to serial USB cable RX.
-   Connect ROCK PI 4B board gpio pin 39 to serial USB cable ground.
+   Plugin sdcard to PC.
+   ./mksdcardimg.sh
+   sudo dd if=./sdcard.img of=/dev/mmcblk0 bs=4096 conv=notrunc,fsync
+   Plugin sdcard to radxa.
+   Connect radxa gpio pin  8 to serial USB cable TX.
+   Connect radxa gpio Pin 10 to serial USB cable RX.
+   Connect radxa gpio pin 39 to serial USB cable ground.
    Type "script ~/outputfile.txt" on PC.
    Plugin serial USB cable to PC.
    Type "sudo screen /dev/ttyUSB0 1500000" on PC.
-   Power on the ROCK PI 4B board.
+   Power on radxa.
    It should display the test menu with 11 test items on PC.
    After tests done, hit q to exit tests.
-   Power off the ROCK PI 4B board.
+   Power off radxa.
    Unplug serial USB cable from PC.
    Type "exit" on PC.
    vi ~/outputfile.txt
@@ -86,19 +88,20 @@ Steps to test gpio:
    git clone https://github.com/ayufan-rock64/rkbin.git
    make clean
    make test
-   Plugin sd card to PC
-   make burn_sdcard
-   Plugin the sd card to Firefly ROC-RK3328-CC board.
-   Connect Firefly ROC-RK3328-CC board gpio pin 36 to serial USB cable TX.
-   Connect Firefly ROC-RK3328-CC board gpio Pin 38 to serial USB cable RX.
-   Connect Firefly ROC-RK3328-CC board gpio pin 39 to serial USB cable ground.
+   Plugin sdcard to PC
+   ./mksdcardimg.sh
+   sudo dd if=./sdcard.img of=/dev/mmcblk0 bs=4096 conv=notrunc,fsync
+   Plugin sdcard to rk3328.
+   Connect rk3328 gpio pin 36 to serial USB cable TX.
+   Connect rk3328 gpio Pin 38 to serial USB cable RX.
+   Connect rk3328 gpio pin 39 to serial USB cable ground.
    Type "script ~/outputfile.txt" on PC.
    Plugin serial USB cable to PC.
    Type "sudo screen /dev/ttyUSB0 1500000" on PC.
-   Power on the Firefly ROC-RK3328-CC board.
+   Power on rk3328.
    It should display the test menu with 11 test items on PC.
    After tests done, hit q to exit tests.
-   Power off the Firefly ROC-RK3328-CC board.
+   Power off rk3328.
    Unplug serial USB cable from PC.
    Type "exit" on PC.
    vi ~/outputfile.txt
@@ -107,19 +110,20 @@ Steps to test gpio:
    make clean
    make ddrboot
    make test
-   Plugin sd card to PC.
-   make burn_sdcard
-   Plugin sd card to ASUS Tinkerboard.
-   Connect Tinkerboard gpio Pin 37 to serial USB cable TX.
-   Connect Tinkerboard gpio pin 36 to serial USB cable RX.
-   Connect Tinkerboard gpio pin 39 to serial USB cable ground.
+   Plugin sdcard to PC.
+   sudo dd if=./ddrboot.img of=/dev/mmcblk0 seek=64 oflag=sync status=progress
+   sudo dd if=./test.bin of=/dev/mmcblk0 seek=128 oflag=sync status=progress
+   Plugin sdcard to tinker.
+   Connect tinker gpio Pin 37 to serial USB cable TX.
+   Connect tinker gpio pin 36 to serial USB cable RX.
+   Connect tinker gpio pin 39 to serial USB cable ground.
    Type "script ~/outputfile.txt" on PC.
    Plugin serial USB cable to PC.
    Type "sudo screen /dev/ttyUSB0 115200" on PC.
-   Power on the Tinkerboard.
+   Power on tinker.
    It should display the test menu with 11 test items on PC.
    After tests done, hit q to exit tests.
-   Power off the Tinkerboard.
+   Power off tinker.
    Unplug serial USB cable from PC.
    Type "exit" on PC.
    vi ~/outputfile.txt
@@ -239,17 +243,17 @@ These tests used Seeed Grove starter kit LED, button, buzzer, Grove-LCD RGB Back
 
 a. mmc test.
    radxa/rk3328:
-   This test will read sd card lba 32768.
-   Then read sd card lba 6283260.
-   Then write incremental data to sd card lba 6283260.
-   Then read data from sd card lba 6283260.
+   This test will read sdcard lba 32768.
+   Then read sdcard lba 6283260.
+   Then write incremental data to sdcard lba 6283260.
+   Then read data from sdcard lba 6283260.
 
    tinker:
-   This test will read sd card lba 8192.
+   This test will read sdcard lba 8192.
    Then erase 4MB from lba 6275072 to 6283263.
-   Then read sd card lba 6283260.
-   Then write incremental data to sd card lba 6283260.
-   Then read data from sd card lba 6283260.
+   Then read sdcard lba 6283260.
+   Then write incremental data to sdcard lba 6283260.
+   Then read data from sdcard lba 6283260.
 
 b. dmac test.
    rpi4b/radxa:

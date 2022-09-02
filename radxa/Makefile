@@ -9,7 +9,7 @@ test: test.img
 
 test.img: test.bin
 	./rkbin/tools/loaderimage --pack --uboot $< $@ 0x200000 --size 1024 1
-	mkimage -n rk3399 -T rksd -d ./rkbin/bin/rk33/rk3399_ddr_800MHz_v1.25.bin idbloader.img
+	mkimage -n rk3399 -T rksd -d ./rkbin/bin/rk33/rk3399_ddr_800MHz_v1.27.bin idbloader.img
 	cat ./rkbin/bin/rk33/rk3399_miniloader_v1.26.bin >> idbloader.img
 	./rkbin/tools/trust_merger trust.ini
 
